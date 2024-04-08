@@ -29,6 +29,8 @@ export class TWDataService {
                 const languageDataArray = jsonData[convoId][agentId] as LanguageData[];
                 // console.log(languageDataArray[0].language);
                 const convertedDate = new Date(languageDataArray[0].time).toLocaleDateString('en-US');
+                const convertedDateTime = new Date(languageDataArray[0].time).toLocaleString('en-US');
+                console.log("🚀 ~ TWDataService ~ makeFlat ~ convertedDateTime:", convertedDateTime)
                 // console.log(`converted date = ${convertedDate}`);
 
                 let event: EventData = {
@@ -36,7 +38,8 @@ export class TWDataService {
                     agentId: agentId,
                     language: languageDataArray[0].language,
                     timestamp: languageDataArray[0].time,
-                    date: convertedDate
+                    date: convertedDate,
+                    dateTime: convertedDateTime
                 };
 
                 eventDataArray.push(event);

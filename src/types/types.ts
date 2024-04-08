@@ -26,6 +26,8 @@ export type EventData = {
     language: string;
     timestamp: number;
     date: string;
+    dateTime: string;
+
 };
 
 export type LanguageData = {

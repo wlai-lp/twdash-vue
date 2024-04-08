@@ -277,9 +277,9 @@ watch(
             <div class="card">
                 <h5>Last 10 Conversations</h5>
                 <DataTable :value="convoListData" tableStyle="min-width: 50rem">
-                    <Column field="convoId" header="convoId"></Column>
-                    <Column field="agentId" header="agentId"></Column>
-                    <Column field="language" header="language">
+                    <Column field="convoId" header="Convo ID"></Column>
+                    <Column field="agentId" header="Agent ID"></Column>
+                    <Column field="language" header="Language">
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <img alt="flag" src="/demo/images/flag/flag_placeholder.png"
@@ -289,7 +289,8 @@ watch(
                         </template>
                     </Column>
                     <!-- <Column field="timestamp" header="timestamp"></Column> -->
-                    <Column field="date" header="date"></Column>
+                    <!-- <Column field="date" header="Date"></Column> -->
+                    <Column field="dateTime" header="Time"></Column>
                 </DataTable>
             </div>
         </div>
