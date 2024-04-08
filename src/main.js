@@ -111,6 +111,9 @@ import BlockViewer from '@/components/BlockViewer.vue';
 import '@/assets/styles.scss';
 
 const app = createApp(App);
+// const env = process.env.NODE_ENV || 'development';
+// console.log("🚀 ~ env:", env)
+
 
 app.use(router);
 app.use(PrimeVue, { ripple: true });

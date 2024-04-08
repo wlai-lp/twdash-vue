@@ -7,14 +7,9 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
-            children: [
+            children: [                
                 {
                     path: '/',
-                    name: 'dashboard',
-                    component: () => import('@/views/Dashboard.vue')
-                },
-                {
-                    path: '/tw',
                     name: 'TWdashboard',
                     component: () => import('@/views/TWDashboard.vue')
                 },
@@ -146,7 +141,8 @@ const router = createRouter({
                     name: 'documentation',
                     component: () => import('@/views/utilities/Documentation.vue')
                 }
-            ]
+            ],
+            // meta: { requiresAuth: true }
         },
         {
             path: '/landing',
@@ -176,5 +172,29 @@ const router = createRouter({
         }
     ]
 });
+
+// TODO: add authentication here
+router.beforeEach((to, from, next) => {
+    console.log("🚀 ~ router.beforeEach ~ next:", next)
+    console.log("🚀 ~ router.beforeEach ~ from:", from)
+    console.log("🚀 ~ router.beforeEach ~ to:", to)
+    // Check if the route requires authentication
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // Check if the user is logged in (example: check if there's a token in localStorage)
+      const isLoggedIn = !!localStorage.getItem('token');
+  
+      // If the user is not logged in, redirect to the login page
+      if (!isLoggedIn) {
+        // next({ name: 'Login', query: { redirect: to.fullPath }});
+        next({ name: 'landing', query: { redirect: to.fullPath }});
+      } else {
+        // If the user is logged in, allow navigation to the requested route
+        next();
+      }
+    } else {
+      // If the route does not require authentication, allow navigation
+      next();
+    }
+  })
 
 export default router;
