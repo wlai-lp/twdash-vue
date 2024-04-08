@@ -67,7 +67,7 @@ onMounted(async () => {
     console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
     // count.value = twdata._rawValue.length;
     count.value = twDataService.getTotalCount();
-    debugger;
+    // debugger;
     const d = twDataService.getTopNLanguages(1);
     countTopUsage.count = d[0][1];
     countTopUsage.lang = d[0][0];
@@ -275,7 +275,7 @@ watch(
         <!-- convo table -->
         <div class="col-12">
             <div class="card">
-                <h5>Conversations</h5>
+                <h5>Last 10 Conversations</h5>
                 <DataTable :value="convoListData" tableStyle="min-width: 50rem">
                     <Column field="convoId" header="convoId"></Column>
                     <Column field="agentId" header="agentId"></Column>
