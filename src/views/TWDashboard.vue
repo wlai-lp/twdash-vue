@@ -6,6 +6,7 @@ import { useLayout } from '@/layout/composables/layout';
 // import HelloWorld from '@/views/twreportuikit/HelloWorld'
 import HelloWorld from '@/components/HelloWorld.vue';
 import TopLanguages from '@/components/TopLanguages.vue';
+import LanguagePie from '@/components/LanguagePie.vue';
 
 
 const count = ref(0);
@@ -16,6 +17,8 @@ const countTopUsage = reactive({
     lang: 'abc'
 });
 
+const parentValue = ref(3);
+
 const convoListData = ref(null);
 
 const { isDarkTheme } = useLayout();
@@ -23,6 +26,13 @@ const calendarFromValue = ref('03/01/2024');
 const calendarToValue = ref('03/31/2024');
 const products = ref(null);
 const twdata = ref(null);
+
+const chartBarData = ref([15, 59, 80, 81, 56, 55, 90]);
+const updateValue = () => {
+    console.log("update chartbardata value")
+    chartBarData.value = [75, 59, 80, 81, 26, 15, 10];
+    parentValue.value += 1;
+};
 
 const lineData = reactive({
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -67,6 +77,8 @@ function updateWithNewData(data) {
     const d = twDataService.getTopNLanguages(1);
     countTopUsage.count = d[0][1];
     countTopUsage.lang = d[0][0];
+    // debugger;
+    chartBarData.value = [15, 29, 30, 81, 56, 55, 90];
 }
 
 onMounted(async () => {
@@ -205,6 +217,8 @@ watch(
 </script>
 
 <template>
+    <button @click="updateValue">Update Value</button>{{ chartBarData }}
+    <LanguagePie msg="Vite + Vue213 " :propValue="parentValue" />
     <div class="grid">
 
         <!-- Date Range Picker -->
@@ -329,7 +343,8 @@ watch(
         <!-- playing -->
         <div class="col-12">
             <div class="card">
-                <TopLanguages msg="Vite + Vue" barData="abc" :twDataService="twDataService"/>
+                <!-- <TopLanguages msg="Vite + Vue" :barData="chartBarData" /> -->
+                <TopLanguages :chartBarData="chartBarData" />
             </div>
         </div>
         <!-- end playing -->

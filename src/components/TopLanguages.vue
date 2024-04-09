@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { TWDataService } from '../service/TWDataService';
@@ -9,17 +9,23 @@ let textColor = documentStyle.getPropertyValue('--text-color');
 let textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
 let surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-const props = defineProps({
-    msg: String,
-    barData: String,
-    twDataService: TWDataService
-})
-console.log("🚀 ~ msg:", props.barData)
-debugger;
-console.log("🚀 ~ msg12:", props.twDataService)
+defineProps<{ chartBarData: Number }>()
 
-props.barData = [65, 59, 80, 81, 56, 55, 0];
-//   console.log("🚀 ~ barData:", barData)
+// const props = defineProps({
+//     msg: String,
+//     barData: {
+//         type: Array,
+//         required: true
+//   },
+//     // twDataService: TWDataService
+// })
+// console.log("🚀 ~ barData:", props.barData)
+// debugger;
+// console.log("🚀 ~ msg12:", props.twDataService)
+
+// can't do this, props are readonly
+// props.barData = [65, 59, 80, 81, 56, 55, 0];
+//   console.log("🚀 ~ barData:", props.barData)
 const tempdata = [65, 59, 80, 81, 56, 55, 10];
 
 const lineData = ref(null);
@@ -57,7 +63,7 @@ twDataService.getData().then((data) => {
                 label: 'My First datasetxxx',
                 backgroundColor: documentStyle.getPropertyValue('--primary-500'),
                 borderColor: documentStyle.getPropertyValue('--primary-500'),
-                data: [65, 59, 80, 81, 56, 55, 100]
+                data: props.barData
             },
             {
                 label: 'My Second dataset',
@@ -267,6 +273,7 @@ watch(
 </script>
 
 <template>
+    <h1>{{ chartBarData }} </h1>
     <div class="grid p-fluid">
         <div class="col-12 xl:col-6">
             <div class="card flex flex-column align-items-center">
