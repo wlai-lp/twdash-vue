@@ -278,14 +278,14 @@ watch(
         </div>
         <div class="col-12 xl:col-6">
             <div class="card">
-                <h5>Overall CSAT</h5>
+                <h5>Overall CSAT (TODO)</h5>
                 <Chart type="line" :data="lineData" :options="lineOptions"></Chart>
             </div>
         </div>
         
         <div class="col-12 xl:col-6">
             <div class="card flex flex-column align-items-center">
-                <h5 class="text-left w-full">CSAT Per Language</h5>
+                <h5 class="text-left w-full">CSAT Per Language (TODO)</h5>
                 <Chart type="pie" :data="pieData" :options="pieOptions"></Chart>
             </div>
         </div>

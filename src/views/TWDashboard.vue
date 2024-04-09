@@ -11,18 +11,19 @@ import TopLanguages from '@/components/TopLanguages.vue';
 const count = ref(0);
 // const countTopUsage = ref(0);
 const countTopUsage = reactive({
-  message: 'Hello Vue!',
-  count: '0',
-  lang: 'abc'
+    message: 'Hello Vue!',
+    count: '0',
+    lang: 'abc'
 });
 
 const convoListData = ref(null);
 
 const { isDarkTheme } = useLayout();
-const calendarFromValue = ref('02/01/2024');
-const calendarToValue = ref('02/29/2024');
+const calendarFromValue = ref('03/01/2024');
+const calendarToValue = ref('03/31/2024');
 const products = ref(null);
 const twdata = ref(null);
+
 const lineData = reactive({
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -51,6 +52,22 @@ const items = ref([
 const lineOptions = ref(null);
 const productService = new ProductService();
 const twDataService = new TWDataService();
+twDataService.setFromTimestamp((new Date('3/1/2024')).getTime());
+twDataService.setToTimestamp((new Date('3/31/2024')).getTime());
+
+
+function updateWithNewData(data) {
+    twdata.value = data
+    convoListData.value = twdata._rawValue.slice(0, 10);
+    console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
+    // count.value = twdata._rawValue.length;
+    // count.value = twDataService.getTotalCount();
+    count.value = data.length;
+    // debugger;
+    const d = twDataService.getTopNLanguages(1);
+    countTopUsage.count = d[0][1];
+    countTopUsage.lang = d[0][0];
+}
 
 onMounted(async () => {
     productService.getProductsSmall().then((data) => (products.value = data));
@@ -62,15 +79,8 @@ onMounted(async () => {
     // twDataService.getData().then((data) => (twdata.value = data));
 
     const data = await twDataService.getData();
-    twdata.value = data
-    convoListData.value = twdata._rawValue.slice(0, 10);
-    console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
-    // count.value = twdata._rawValue.length;
-    count.value = twDataService.getTotalCount();
-    // debugger;
-    const d = twDataService.getTopNLanguages(1);
-    countTopUsage.count = d[0][1];
-    countTopUsage.lang = d[0][0];
+    updateWithNewData(data);
+
     // countTopUsage.value = twDataService.getTopNLanguages(1);
 
 
@@ -164,10 +174,13 @@ watch(
 
 watch(
     calendarFromValue,
-    (val) => {
-        console.log("value changed to " + val)
+    async (val) => {
+        
+        const data = await twDataService.getUpdatedFrom(val.getTime());
+        // debugger;
+        updateWithNewData(data);
         // change the data
-        count.value = '234'
+        // count.value = '234'
     },
     { immediate: true }
 );
@@ -239,7 +252,7 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">CSAT</span>
+                        <span class="block text-500 font-medium mb-3">CSAT (TODO)</span>
                         <div class="text-900 font-medium text-xl">4.3</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"

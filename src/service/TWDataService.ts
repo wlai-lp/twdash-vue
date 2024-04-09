@@ -2,6 +2,18 @@ import { EventData, LanguageData } from '../types/types';
 
 export class TWDataService {
     workingData: EventData[];
+    masterData: EventData[];
+    fromTimestamp: number;
+    toTimestamp: number;
+
+    setFromTimestamp(fromTimestamp:number){
+        // debugger;
+        this.fromTimestamp = fromTimestamp
+    }
+
+    setToTimestamp(toTimestamp:number){
+        this.toTimestamp = toTimestamp
+    }
 
     async getData() {
         try {
@@ -59,7 +71,13 @@ export class TWDataService {
         console.log(eventDataArray.length);
         // cache the data to local storage
         this.workingData = eventDataArray;
+        this.masterData = eventDataArray;
         return eventDataArray;
+    }
+
+    getUpdatedFrom(timestamp : number) {
+        this.workingData = this.masterData.filter(e => e.timestamp >= timestamp)
+        return this.workingData;
     }
 
     getTotalCount() {
