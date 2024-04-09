@@ -11,9 +11,13 @@ let surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
 const props = defineProps({
     msg: String,
-    barData: String
+    barData: String,
+    twDataService: TWDataService
 })
-console.log("🚀 ~ msg:", props.msg)
+console.log("🚀 ~ msg:", props.barData)
+debugger;
+console.log("🚀 ~ msg12:", props.twDataService)
+
 props.barData = [65, 59, 80, 81, 56, 55, 0];
 //   console.log("🚀 ~ barData:", barData)
 const tempdata = [65, 59, 80, 81, 56, 55, 10];

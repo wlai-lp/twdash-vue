@@ -42,7 +42,7 @@ export class TWDataService {
                 // console.log(languageDataArray[0].language);
                 const convertedDate = new Date(languageDataArray[0].time).toLocaleDateString('en-US');
                 const convertedDateTime = new Date(languageDataArray[0].time).toLocaleString('en-US');
-                console.log("🚀 ~ TWDataService ~ makeFlat ~ convertedDateTime:", convertedDateTime)
+                // console.log("🚀 ~ TWDataService ~ makeFlat ~ convertedDateTime:", convertedDateTime)
                 // console.log(`converted date = ${convertedDate}`);
 
                 let event: EventData = {

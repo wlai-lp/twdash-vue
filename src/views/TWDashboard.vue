@@ -175,12 +175,15 @@ watch(
 watch(
     calendarFromValue,
     async (val) => {
-        
-        const data = await twDataService.getUpdatedFrom(val.getTime());
-        // debugger;
-        updateWithNewData(data);
-        // change the data
-        // count.value = '234'
+        if (val instanceof Date) {
+
+            const data = await twDataService.getUpdatedFrom(val.getTime());
+            // debugger;
+            updateWithNewData(data);
+            // change the data
+            // count.value = '234'
+        }
+
     },
     { immediate: true }
 );
@@ -188,12 +191,13 @@ watch(
 watch(
     calendarToValue,
     async (val) => {
-        
-        const data = await twDataService.getUpdatedTo(val.getTime());
-        // debugger;
-        updateWithNewData(data);
-        // change the data
-        // count.value = '234'
+        if (val instanceof Date) {
+            const data = await twDataService.getUpdatedTo(val.getTime());
+            // debugger;
+            updateWithNewData(data);
+            // change the data
+            // count.value = '234'
+        }
     },
     { immediate: true }
 );
@@ -325,7 +329,7 @@ watch(
         <!-- playing -->
         <div class="col-12">
             <div class="card">
-                <TopLanguages msg="Vite + Vue" />
+                <TopLanguages msg="Vite + Vue" barData="abc" :twDataService="twDataService"/>
             </div>
         </div>
         <!-- end playing -->
