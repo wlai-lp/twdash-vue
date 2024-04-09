@@ -185,6 +185,19 @@ watch(
     { immediate: true }
 );
 
+watch(
+    calendarToValue,
+    async (val) => {
+        
+        const data = await twDataService.getUpdatedTo(val.getTime());
+        // debugger;
+        updateWithNewData(data);
+        // change the data
+        // count.value = '234'
+    },
+    { immediate: true }
+);
+
 </script>
 
 <template>

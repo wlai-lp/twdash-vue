@@ -75,8 +75,15 @@ export class TWDataService {
         return eventDataArray;
     }
 
+    getUpdatedTo(timestamp : number) {
+        this.toTimestamp = timestamp
+        this.workingData = this.masterData.filter(e => e.timestamp >= this.fromTimestamp && e.timestamp <= this.toTimestamp)
+        return this.workingData;
+    }
+
     getUpdatedFrom(timestamp : number) {
-        this.workingData = this.masterData.filter(e => e.timestamp >= timestamp)
+        this.fromTimestamp = timestamp
+        this.workingData = this.masterData.filter(e => e.timestamp >= this.fromTimestamp && e.timestamp <= this.toTimestamp)
         return this.workingData;
     }
 
