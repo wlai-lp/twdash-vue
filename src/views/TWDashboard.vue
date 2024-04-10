@@ -8,6 +8,10 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import TopLanguages from '@/components/TopLanguages.vue';
 import LanguagePie from '@/components/LanguagePie.vue';
 
+let documentStyle = getComputedStyle(document.documentElement);
+let textColor = documentStyle.getPropertyValue('--text-color');
+let textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+let surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
 const count = ref(0);
 // const countTopUsage = ref(0);
@@ -32,14 +36,47 @@ const updateValue = () => {
     console.log("update chartbardata value")
     chartBarData.value = [75, 59, 80, 81, 26, 15, 10];
     parentValue.value += 1;
+    // lineData.datasets[0].data = [55, 59, 80, 81, 56, 55, 40]
+    // console.log("~ " + JSON.stringify(lineData))
 };
+
+const top4LanPieData = reactive({
+    datasets: [
+        {
+            data: [11, 16, 7, 3],
+            backgroundColor: [documentStyle.getPropertyValue('--indigo-500'), documentStyle.getPropertyValue('--purple-500'), documentStyle.getPropertyValue('--teal-500'), documentStyle.getPropertyValue('--orange-500')],
+            label: 'My dataset'
+        }
+    ],
+    labels: ['Indigo', 'Purple', 'Teal', 'Orange']
+}
+
+);
+
+const top4LanPieOptions = reactive({
+    plugins: {
+        legend: {
+            labels: {
+                color: textColor
+            }
+        }
+    },
+    scales: {
+        r: {
+            grid: {
+                color: surfaceBorder
+            }
+        }
+    }
+});
+
 
 const lineData = reactive({
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
         {
             label: 'First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            data: [15, 59, 80, 81, 56, 55, 40],
             fill: false,
             backgroundColor: '#2f4860',
             borderColor: '#2f4860',
@@ -79,6 +116,11 @@ function updateWithNewData(data) {
     countTopUsage.lang = d[0][0];
     // debugger;
     chartBarData.value = [15, 29, 30, 81, 56, 55, 90];
+
+    // console.log('change line data ' + lineData.value)
+
+    lineData.datasets[0].data = [65, 59, 80, 81, 56, 55, 40]
+
 }
 
 onMounted(async () => {
@@ -219,6 +261,7 @@ watch(
 <template>
     <button @click="updateValue">Update Value</button>{{ chartBarData }}
     <LanguagePie msg="Vite + Vue213 " :propValue="parentValue" />
+
     <div class="grid">
 
         <!-- Date Range Picker -->
@@ -340,6 +383,24 @@ watch(
         </div>
         <!-- end convo table -->
 
+        <!-- line chart -->
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <h5>Overall CSAT (TODO12)</h5>
+                <Chart type="line" :data="lineData" :options="lineOptions"></Chart>
+            </div>
+        </div>
+        <!-- end line chart -->
+
+        <!-- top4lan pie -->
+        <div class="col-12 xl:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Top 5 Languages</h5>
+                <Chart type="polarArea" :data="top4LanPieData" :options="top4LanPieOptions"></Chart>
+            </div>
+        </div>
+        <!-- end top4lan pie -->
+
         <!-- playing -->
         <div class="col-12">
             <div class="card">
@@ -348,6 +409,8 @@ watch(
             </div>
         </div>
         <!-- end playing -->
+
+
 
 
     </div>
