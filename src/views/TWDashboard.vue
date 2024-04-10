@@ -121,10 +121,8 @@ function updateWithNewData(data) {
     lineData.datasets[0].data = [65, 59, 80, 81, 56, 55, 40]
 
     const top4LanPieDataResult = twDataService.getTop4LanPieData();
-    debugger;
     top4LanPieData.datasets[0].data = top4LanPieDataResult.data
     top4LanPieData.labels = top4LanPieDataResult.labels
-    debugger;
 
 }
 
@@ -264,11 +262,7 @@ watch(
 </script>
 
 <template>
-    <button @click="updateValue">Update Value</button>{{ chartBarData }}
-    <LanguagePie msg="Vite + Vue213 " :propValue="parentValue" />
-
     <div class="grid">
-
         <!-- Date Range Picker -->
         <div class="col-12">
             <div class="card">
