@@ -113,4 +113,23 @@ export class TWDataService {
         // Return top 5 counts
         return sortedLanguageCounts.slice(0, i);
     }
+
+    getTop4LanPieData(){
+        interface returnData {
+            data: number[];
+            labels: string[];
+        }
+
+        const top4 = this.getTopNLanguages(4);
+        let top4Result : returnData = {data: [], labels: []}
+        for(let i = 0; i < top4.length; i++ ){
+            top4Result.data.push(Object.entries(top4[i])[1][1])
+            top4Result.labels.push(Object.entries(top4[i])[0][1])
+        }
+        // const result : returnData = {data: }
+        return top4Result;
+        
+        
+    }
+
 }

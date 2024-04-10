@@ -118,8 +118,13 @@ function updateWithNewData(data) {
     chartBarData.value = [15, 29, 30, 81, 56, 55, 90];
 
     // console.log('change line data ' + lineData.value)
-
     lineData.datasets[0].data = [65, 59, 80, 81, 56, 55, 40]
+
+    const top4LanPieDataResult = twDataService.getTop4LanPieData();
+    debugger;
+    top4LanPieData.datasets[0].data = top4LanPieDataResult.data
+    top4LanPieData.labels = top4LanPieDataResult.labels
+    debugger;
 
 }
 
@@ -383,6 +388,15 @@ watch(
         </div>
         <!-- end convo table -->
 
+         <!-- top4lan pie -->
+         <div class="col-12 xl:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Top 4 Languages</h5>
+                <Chart type="polarArea" :data="top4LanPieData" :options="top4LanPieOptions"></Chart>
+            </div>
+        </div>
+        <!-- end top4lan pie -->
+
         <!-- line chart -->
         <div class="col-12 xl:col-6">
             <div class="card">
@@ -392,14 +406,7 @@ watch(
         </div>
         <!-- end line chart -->
 
-        <!-- top4lan pie -->
-        <div class="col-12 xl:col-6">
-            <div class="card flex flex-column align-items-center">
-                <h5 class="text-left w-full">Top 5 Languages</h5>
-                <Chart type="polarArea" :data="top4LanPieData" :options="top4LanPieOptions"></Chart>
-            </div>
-        </div>
-        <!-- end top4lan pie -->
+       
 
         <!-- playing -->
         <div class="col-12">
