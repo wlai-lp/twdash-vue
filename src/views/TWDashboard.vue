@@ -341,7 +341,7 @@ watch(
                     </div>
                     <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                        <i class="pi pi-comments text-blue-500 text-xl"></i>
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">24 new </span>
@@ -360,7 +360,7 @@ watch(
                     </div>
                     <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                        <i class="pi pi-heart-fill text-orange-500 text-xl"></i>
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">{{ countTopUsage.lang }} </span>
@@ -379,7 +379,7 @@ watch(
                     </div>
                     <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+                        <i class="pi pi-thumbs-up-fill text-cyan-500 text-xl"></i>
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">4.6 </span>
@@ -398,7 +398,7 @@ watch(
                     </div>
                     <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-comment text-purple-500 text-xl"></i>
+                        <i class="pi pi-clock text-purple-500 text-xl"></i>
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">85 </span>
