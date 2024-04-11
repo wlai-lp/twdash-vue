@@ -38,6 +38,8 @@ export class TWDataService {
 
     async getLocalCache(){
         const cachedValue = await db.twEvents.toCollection().toArray();
+        this.masterData = cachedValue
+        this.workingData = cachedValue
         return cachedValue;
     }
 

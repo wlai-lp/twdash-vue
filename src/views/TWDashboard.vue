@@ -4,8 +4,10 @@ import { ProductService } from '@/service/ProductService';
 import { TWDataService } from '@/service/TWDataService';
 import indexedDBManager from '@/service/indexDBService';
 import { useLayout } from '@/layout/composables/layout';
+import { useToast } from 'primevue/usetoast';
 import TopLanguages from '@/components/TopLanguages.vue';
 
+const toast = useToast();
 let documentStyle = getComputedStyle(document.documentElement);
 let textColor = documentStyle.getPropertyValue('--text-color');
 let textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -125,6 +127,9 @@ function updateWithNewData(data) {
     top4LanPieData.datasets[0].data = top4LanPieDataResult.data
     top4LanPieData.labels = top4LanPieDataResult.labels
 
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Dataset updated', life: 3000 });
+    
+
 }
 
 onMounted(async () => {
@@ -140,8 +145,8 @@ onMounted(async () => {
     const data = await twDataService.getData(twDataMonth);
     updateWithNewData(data);
 
-    // countTopUsage.value = twDataService.getTopNLanguages(1);
-
+    // countTopUsage.value = twDataService.getTopNLanguages(1);    
+    
 
 
     // twDataService.getData().then((data) => {
