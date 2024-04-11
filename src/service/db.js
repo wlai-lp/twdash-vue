@@ -7,7 +7,7 @@ db.version(1).stores({
   twCachedData: '++id, date, added'
 });
 
-const id = await db.twEvents.add({
-    convoId: 'wei',
-    timestamp: '45',
-  });
+// const id = await db.twEvents.add({
+//     convoId: 'wei',
+//     timestamp: '45',
+//   });
