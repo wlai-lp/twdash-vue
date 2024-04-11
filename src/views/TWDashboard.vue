@@ -1,13 +1,32 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch, nextTick } from 'vue';
 import { ProductService } from '@/service/ProductService';
 import { TWDataService } from '@/service/TWDataService';
 import indexedDBManager from '@/service/indexDBService';
 import { useLayout } from '@/layout/composables/layout';
 import { useToast } from 'primevue/usetoast';
 import TopLanguages from '@/components/TopLanguages.vue';
+import ConfettiExplosion from "vue-confetti-explosion";
 
+const visible = ref(false);
+const explode = async () => {
+    visible.value = false;
+    await nextTick();
+    visible.value = true;
+};
 const toast = useToast();
+const onReply = () => {
+    // toast.removeGroup('bc');
+    const audio = new Audio('confettipop.mp3')
+    audio.play();
+    explode();
+}
+
+const onClose = () => {
+    visible.value = false;
+}
+
+
 let documentStyle = getComputedStyle(document.documentElement);
 let textColor = documentStyle.getPropertyValue('--text-color');
 let textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -31,6 +50,7 @@ const convoListData = ref(null);
 const { isDarkTheme } = useLayout();
 const calendarFromValue = ref('03/01/2024');
 const calendarToValue = ref('03/31/2024');
+const csat = ref(0);
 const products = ref(null);
 const twdata = ref(null);
 
@@ -118,6 +138,26 @@ function updateWithNewData(data) {
     countTopUsage.count = d[0][1];
     countTopUsage.lang = d[0][0];
     // debugger;
+
+    // csat
+    // TODO: this is mocked
+    const randomNumber = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
+    if (randomNumber > 40) {
+        // toast.add({ severity: 'success', summary: 'success', detail: 'High CSAT Achievement Unlocked', life: 3000 });
+
+        toast.add({ severity: 'success', summary: 'High CSAT Achievement Unlocked', group: 'bc' });
+
+
+        async () => {
+            visible.value = false;
+            await nextTick();
+            visible.value = true;
+        }
+
+    }
+    csat.value = randomNumber / 10
+
+
     chartBarData.value = [15, 29, 30, 81, 56, 55, 90];
 
     // console.log('change line data ' + lineData.value)
@@ -127,8 +167,9 @@ function updateWithNewData(data) {
     top4LanPieData.datasets[0].data = top4LanPieDataResult.data
     top4LanPieData.labels = top4LanPieDataResult.labels
 
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Dataset updated', life: 3000 });
-    
+    toast.add({ severity: 'info', summary: 'info', detail: 'Dataset updated', life: 3000 });
+
+
 
 }
 
@@ -144,9 +185,8 @@ onMounted(async () => {
     const twDataMonth = '022024'
     const data = await twDataService.getData(twDataMonth);
     updateWithNewData(data);
-
     // countTopUsage.value = twDataService.getTopNLanguages(1);    
-    
+
 
 
     // twDataService.getData().then((data) => {
@@ -245,7 +285,7 @@ watch(
             // debugger;
             updateWithNewData(data);
             // change the data
-            // count.value = '234'
+            // count.value = '234'          
         }
 
     },
@@ -259,8 +299,6 @@ watch(
             const data = await twDataService.getUpdatedTo(val.getTime());
             // debugger;
             updateWithNewData(data);
-            // change the data
-            // count.value = '234'
         }
     },
     { immediate: true }
@@ -269,6 +307,10 @@ watch(
 </script>
 
 <template>
+    <div>
+        <!-- <button @click="explode">Show confetti</button> -->
+        <ConfettiExplosion v-if="visible" />
+    </div>
     <div class="grid">
         <!-- Date Range Picker -->
         <div class="col-12">
@@ -333,7 +375,7 @@ watch(
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3">CSAT (TODO)</span>
-                        <div class="text-900 font-medium text-xl">4.3</div>
+                        <div class="text-900 font-medium text-xl">{{ csat }}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
@@ -389,8 +431,8 @@ watch(
         </div>
         <!-- end convo table -->
 
-         <!-- top4lan pie -->
-         <div class="col-12 xl:col-6">
+        <!-- top4lan pie -->
+        <div class="col-12 xl:col-6">
             <div class="card flex flex-column align-items-center">
                 <h5 class="text-left w-full">Top 4 Languages</h5>
                 <Chart type="polarArea" :data="top4LanPieData" :options="top4LanPieOptions"></Chart>
@@ -407,7 +449,7 @@ watch(
         </div>
         <!-- end line chart -->
 
-       
+
 
         <!-- playing -->
         <div class="col-12">
@@ -419,6 +461,22 @@ watch(
         <!-- end playing -->
 
 
+        <div class="card flex justify-content-center">
+            <Toast position="top-center" group="bc" @close="onClose">
+                <template #message="slotProps">
+                    <div class="flex flex-column align-items-start" style="flex: 1">
+                        <div class="flex align-items-center gap-2">
+                            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+                                shape="circle" />
+                            <span class="font-bold text-900">MetaMask Bot</span>
+                        </div>
+                        <div class="font-medium text-lg my-3 text-900">{{ slotProps.message.summary }}</div>
+                        <Button class="p-button-sm" label="Celebrate" @click="onReply()"></Button>
+                    </div>
+                </template>
+            </Toast>
+            <Button @click="showTemplate" label="View" />
+        </div>
 
 
     </div>
