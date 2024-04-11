@@ -49,9 +49,9 @@ const setColorOptions = () => {
 
 const twDataService = new TWDataService();
 
-twDataService.getData().then((data) => {
+// twDataService.getData('022024').then((data) => {
     // debugger;
-    console.log("🚀 ~ twDataService.getData ~ data:", data)
+    // console.log("🚀 ~ twDataService.getData ~ data:", data)
 
     // twdata.value = data
     // convoListData.value = twdata._rawValue.slice(0, 10);
@@ -63,7 +63,7 @@ twDataService.getData().then((data) => {
                 label: 'My First datasetxxx',
                 backgroundColor: documentStyle.getPropertyValue('--primary-500'),
                 borderColor: documentStyle.getPropertyValue('--primary-500'),
-                data: props.barData
+                // data: props.barData
             },
             {
                 label: 'My Second dataset',
@@ -81,7 +81,7 @@ twDataService.getData().then((data) => {
     };
 
 
-});
+
 
 const setChart = () => {
     

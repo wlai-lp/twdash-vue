@@ -2,16 +2,17 @@
 import { onMounted, reactive, ref, watch } from 'vue';
 import { ProductService } from '@/service/ProductService';
 import { TWDataService } from '@/service/TWDataService';
+import indexedDBManager from '@/service/indexDBService';
 import { useLayout } from '@/layout/composables/layout';
-// import HelloWorld from '@/views/twreportuikit/HelloWorld'
-import HelloWorld from '@/components/HelloWorld.vue';
 import TopLanguages from '@/components/TopLanguages.vue';
-import LanguagePie from '@/components/LanguagePie.vue';
 
 let documentStyle = getComputedStyle(document.documentElement);
 let textColor = documentStyle.getPropertyValue('--text-color');
 let textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
 let surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+// init indexdb
+const indexdbInited = indexedDBManager.init();
 
 const count = ref(0);
 // const countTopUsage = ref(0);
@@ -106,7 +107,7 @@ twDataService.setToTimestamp((new Date('3/31/2024')).getTime());
 function updateWithNewData(data) {
     twdata.value = data
     convoListData.value = twdata._rawValue.slice(0, 10);
-    console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
+    // console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
     // count.value = twdata._rawValue.length;
     // count.value = twDataService.getTotalCount();
     count.value = data.length;
@@ -135,7 +136,8 @@ onMounted(async () => {
     count.value = 123;
     // twDataService.getData().then((data) => (twdata.value = data));
 
-    const data = await twDataService.getData();
+    const twDataMonth = '022024'
+    const data = await twDataService.getData(twDataMonth);
     updateWithNewData(data);
 
     // countTopUsage.value = twDataService.getTopNLanguages(1);

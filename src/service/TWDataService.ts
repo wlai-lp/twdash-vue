@@ -1,4 +1,5 @@
 import { EventData, LanguageData } from '../types/types';
+import { db } from '@/service/db';
 
 export class TWDataService {
     workingData: EventData[];
@@ -15,11 +16,50 @@ export class TWDataService {
         this.toTimestamp = toTimestamp
     }
 
-    async getData() {
+    async addToIndexDB(eventDataArray: EventData[], twDataMonth){
+        db.transaction('rw', db.twEvents, db.twCachedData, async ()=>{
+            const id = await db.twCachedData.add({date: twDataMonth, added: true});
+
+            eventDataArray.forEach(async (e) => {
+                await db.twEvents.add(e);
+            })
+        }).then(() => {
+            console.log("Transaction committed");
+        }).catch(err => {
+            console.error(err.stack);
+        });
+        return true;
+    }
+
+    async checkLocalCache(twDataMonth){
+        const cachedValue = await db.twCachedData.get({date: twDataMonth});
+        return cachedValue ? true : false
+    }
+
+    async getLocalCache(){
+        const cachedValue = await db.twEvents.toCollection().toArray();
+        return cachedValue;
+    }
+
+    /**
+     * check indexdb for the month 022024 and save it to twEvetns and twCachedData storage pace
+     * has logic to check if it's in cache, if so then get from cache
+     * @param twDataMonth 
+     * @returns 
+     */
+    async getData(twDataMonth) {
+
+        if(await this.checkLocalCache(twDataMonth)){
+            return await this.getLocalCache()
+        }
+
         try {
-            const response = await fetch('/demo/data/tw022024.json', { headers: { 'Cache-Control': 'no-cache' } });
+            const response = await fetch(`/demo/data/tw${twDataMonth}.json`, { headers: { 'Cache-Control': 'no-cache' } });
             const data = await response.json();
-            return this.makeFlat(data);
+            const eventDataArray: EventData[] = this.makeFlat(data)
+            // add it to indexdb
+            const result = await this.addToIndexDB(eventDataArray, twDataMonth)
+            return eventDataArray;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
