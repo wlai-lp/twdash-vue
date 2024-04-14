@@ -14,6 +14,11 @@ const router = createRouter({
                     component: () => import('@/views/TWDashboard.vue')
                 },
                 {
+                    path: '/export',
+                    name: 'ExportDashboard',
+                    component: () => import('@/views/ExportDashboard.vue')
+                },
+                {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
                     component: () => import('@/views/uikit/FormLayout.vue')
