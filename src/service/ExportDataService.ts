@@ -17,7 +17,8 @@ export class ExportDataService {
     }
 
     async getBatchData() {
-        const token = import.meta.env.VITE_TURSO_TOKEN
+        // const token = import.meta.env.VITE_TURSO_TOKEN
+        const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3MTMxMTIzMDEsImlkIjoiZjc4YjJkMzYtNzJhZS00NDc0LTgwZjAtZGNiZDEyMGIwYWRkIn0.iO6a8JXOsoONUnzPFdktvp93gKIUSwXbbybxOs6qdkg4ihSLpqj_tRpj95eySoNNBtahwI1a-0tiGL8dWS1SCw"
         const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
         myHeaders.append(
