@@ -92,3 +92,11 @@ export interface Row {
 export enum Type {
     Integer = "integer",
 }
+
+export enum ExportDashSQLQuery {
+    SELECT_ALL_BATCHES = "SELECT * FROM batch_run",
+    SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?",
+    INSERT_USER = "INSERT INTO users (name, email) VALUES (?, ?)",
+    UPDATE_USER = "UPDATE users SET name = ?, email = ? WHERE id = ?",
+    DELETE_USER = "DELETE FROM users WHERE id = ?"
+}

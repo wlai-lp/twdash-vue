@@ -1,4 +1,4 @@
-import { TursoResult } from '../types/types';
+import { TursoResult, ExportDashSQLQuery } from '../types/types';
 import { db } from '@/service/db';
 
 export class ExportDataService {
@@ -17,35 +17,10 @@ export class ExportDataService {
     }
 
     async getBatchData() {
-        const token = import.meta.env.VITE_TURSO_TOKEN
-        // const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3MTMxMTIzMDEsImlkIjoiZjc4YjJkMzYtNzJhZS00NDc0LTgwZjAtZGNiZDEyMGIwYWRkIn0.iO6a8JXOsoONUnzPFdktvp93gKIUSwXbbybxOs6qdkg4ihSLpqj_tRpj95eySoNNBtahwI1a-0tiGL8dWS1SCw"
-        const myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'application/json');
-        myHeaders.append(
-            'Authorization',
-            `Bearer ${token}`
-        );
-
-        const raw = JSON.stringify({
-            requests: [
-                {
-                    type: 'execute',
-                    stmt: {
-                        sql: 'SELECT * FROM batch_run'
-                    }
-                },
-                {
-                    type: 'close'
-                }
-            ]
-        });
-
-        const requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
+        const myHeaders = getHeaders();
+        console.log(ExportDashSQLQuery.SELECT_ALL_BATCHES)
+        const raw = getBodyRaw(ExportDashSQLQuery.SELECT_ALL_BATCHES);
+        const requestOptions = getRequestOptions(myHeaders, raw);
 
         const url = 'https://lp-export-data-wlai-lp.turso.io/v2/pipeline';
         const response = await fetch(url, requestOptions);
@@ -234,3 +209,40 @@ export class ExportDataService {
         return top4Result;
     }
 }
+function getRequestOptions(myHeaders: Headers, raw: string) {
+    return {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    };
+}
+
+function getBodyRaw(sql:string) {
+    console.log(sql)
+    return JSON.stringify({
+        requests: [
+            {
+                type: 'execute',
+                stmt: {
+                    sql: sql
+                }
+            },
+            {
+                type: 'close'
+            }
+        ]
+    });
+}
+
+function getHeaders() {
+    const token = import.meta.env.VITE_TURSO_TOKEN;
+    // const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3MTMxMTIzMDEsImlkIjoiZjc4YjJkMzYtNzJhZS00NDc0LTgwZjAtZGNiZDEyMGIwYWRkIn0.iO6a8JXOsoONUnzPFdktvp93gKIUSwXbbybxOs6qdkg4ihSLpqj_tRpj95eySoNNBtahwI1a-0tiGL8dWS1SCw"
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+        'Authorization',
+        `Bearer ${token}`
+    );
+    return myHeaders;
+}
+
