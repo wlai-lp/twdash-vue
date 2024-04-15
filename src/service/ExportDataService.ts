@@ -30,7 +30,6 @@ export class ExportDataService {
 
     async genericGetCount(sql:string){
         const myHeaders = getHeaders();
-        console.log(ExportDashSQLQuery.SELECT_ALL_BATCHES)
         const raw = getBodyRaw(sql);
         const requestOptions = getRequestOptions(myHeaders, raw);
 
@@ -44,10 +43,9 @@ export class ExportDataService {
         return count
     }
 
-    async getBatchData() {
+    async genericGetTable(sql:string){
         const myHeaders = getHeaders();
-        console.log(ExportDashSQLQuery.SELECT_ALL_BATCHES)
-        const raw = getBodyRaw(ExportDashSQLQuery.SELECT_ALL_BATCHES);
+        const raw = getBodyRaw(sql);
         const requestOptions = getRequestOptions(myHeaders, raw);
 
         const url = 'https://lp-export-data-wlai-lp.turso.io/v2/pipeline';
@@ -56,15 +54,20 @@ export class ExportDataService {
             throw new Error('Failed to fetch data');
         }
         const tursoResult: TursoResult = await response.json();
+        return tursoResult
+
+    }
+
+    async getBatchData() {
+        
+        const tursoResult = await this.genericGetTable(ExportDashSQLQuery.SELECT_ALL_BATCHES)
         const results:[] = tursoResult.results[0].response.result?.rows.map(item =>{
             
-            console.log("time value = " + item[1].value)
             const startTime = new Date(parseInt(item[1].value))
             const stopTime = new Date(parseInt(item[2].value))
             const fromTime = new Date(parseInt(item[3].value))
             const toTime = new Date(parseInt(item[4].value))
             // const startTime = new Date(1713059146463)
-            console.log("🚀 ~ time value ExportDataService ~ getBatchData ~ startTime:", startTime.toISOString())
             
 
             return {
@@ -75,8 +78,6 @@ export class ExportDataService {
                 param_to: toTime.toISOString()
             }            
         })
-        console.log(JSON.stringify(tursoResult))
-        console.log(JSON.stringify(results))
         return results
     }
 
@@ -246,7 +247,6 @@ function getRequestOptions(myHeaders: Headers, raw: string) {
 }
 
 function getBodyRaw(sql:string) {
-    console.log(sql)
     return JSON.stringify({
         requests: [
             {
@@ -264,7 +264,6 @@ function getBodyRaw(sql:string) {
 
 function getHeaders() {
     const token = import.meta.env.VITE_TURSO_TOKEN;
-    // const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3MTMxMTIzMDEsImlkIjoiZjc4YjJkMzYtNzJhZS00NDc0LTgwZjAtZGNiZDEyMGIwYWRkIn0.iO6a8JXOsoONUnzPFdktvp93gKIUSwXbbybxOs6qdkg4ihSLpqj_tRpj95eySoNNBtahwI1a-0tiGL8dWS1SCw"
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
