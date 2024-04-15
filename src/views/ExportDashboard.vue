@@ -54,7 +54,10 @@ const countTopUsage = reactive({
 
 const parentValue = ref(3);
 
-const convoListData = ref(null);
+const batchListData = ref(null);
+const msgHisListData = ref(null);
+const jsonListData = ref(null);
+const attachmentListData = ref(null);
 
 const { isDarkTheme } = useLayout();
 const calendarFromValue = ref('03/01/2024');
@@ -63,71 +66,6 @@ const csat = ref(0);
 const products = ref(null);
 const twdata = ref(null);
 
-const chartBarData = ref([15, 59, 80, 81, 56, 55, 90]);
-const updateValue = () => {
-    console.log("update chartbardata value")
-    chartBarData.value = [75, 59, 80, 81, 26, 15, 10];
-    parentValue.value += 1;
-    // lineData.datasets[0].data = [55, 59, 80, 81, 56, 55, 40]
-    // console.log("~ " + JSON.stringify(lineData))
-};
-
-const top4LanPieData = reactive({
-    datasets: [
-        {
-            data: [11, 16, 7, 3],
-            backgroundColor: [documentStyle.getPropertyValue('--indigo-500'), documentStyle.getPropertyValue('--purple-500'), documentStyle.getPropertyValue('--teal-500'), documentStyle.getPropertyValue('--orange-500')],
-            label: 'My dataset'
-        }
-    ],
-    labels: ['Indigo', 'Purple', 'Teal', 'Orange']
-}
-
-);
-
-const top4LanPieOptions = reactive({
-    plugins: {
-        legend: {
-            labels: {
-                color: textColor
-            }
-        }
-    },
-    scales: {
-        r: {
-            grid: {
-                color: surfaceBorder
-            }
-        }
-    }
-});
-
-
-const lineData = reactive({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'First Dataset',
-            data: [15, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: '#2f4860',
-            borderColor: '#2f4860',
-            tension: 0.4
-        },
-        {
-            label: 'Second Dataset',
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: '#00bb7e',
-            borderColor: '#00bb7e',
-            tension: 0.4
-        }
-    ]
-});
-const items = ref([
-    { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-    { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-]);
 const lineOptions = ref(null);
 const productService = new ProductService();
 const twDataService = new TWDataService();
@@ -145,11 +83,17 @@ async function updateWithNewData(data) {
     console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
     const newValue = await exportDataService.getBatchData()
     // convoListData.value = twdata._rawValue.slice(0, 10);
-    convoListData.value = newValue
+    batchListData.value = newValue
 
     batchCount.value = await exportDataService.getBatchCount()
     msgHisCallCount.value = await exportDataService.getHistoryCount()
     attachmentCount.value = await exportDataService.getAttachmentCount()
+    msgHisListData.value = await exportDataService.getMsgHisData()
+    jsonListData.value = await exportDataService.getJsonData()
+
+    attachmentListData.value = await exportDataService.getAttachmentData()
+
+
 
     // console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
     // count.value = twdata._rawValue.length;
@@ -429,11 +373,11 @@ watch(
         </div>
         <!-- End High Level Card 4 -->
 
-        <!-- convo table -->
+        <!-- batch list table -->
         <div class="col-12">
             <div class="card">
                 <h5>Last 10 Exports</h5>
-                <DataTable :value="convoListData" tableStyle="min-width: 50rem">
+                <DataTable :value="batchListData" tableStyle="min-width: 50rem">
                     <Column field="batch_run_id" header="Batch ID"></Column>
                     <Column field="start_timestamp" header="Start Time"></Column>
                     <Column field="stop_timestamp" header="Stop Time"></Column>
@@ -443,55 +387,56 @@ watch(
                 </DataTable>
             </div>
         </div>
-        <!-- end convo table -->
+        <!-- end batch list table -->
 
-        <!-- top4lan pie -->
-        <div class="col-12 xl:col-6">
-            <div class="card flex flex-column align-items-center">
-                <h5 class="text-left w-full">Top 4 Languages</h5>
-                <Chart type="polarArea" :data="top4LanPieData" :options="top4LanPieOptions"></Chart>
-            </div>
-        </div>
-        <!-- end top4lan pie -->
-
-        <!-- line chart -->
-        <div class="col-12 xl:col-6">
-            <div class="card">
-                <h5>Overall CSAT (TODO12)</h5>
-                <Chart type="line" :data="lineData" :options="lineOptions"></Chart>
-            </div>
-        </div>
-        <!-- end line chart -->
-
-
-
-        <!-- playing -->
+        <!-- Msg His call -->
+        <!-- batch list table -->
         <div class="col-12">
             <div class="card">
-                <!-- <TopLanguages msg="Vite + Vue" :barData="chartBarData" /> -->
-                <TopLanguages :chartBarData="chartBarData" />
+                <h5>Last 10 Message History Call</h5>
+                <DataTable :value="msgHisListData" tableStyle="min-width: 50rem">
+                    <Column field="msg_history_call_id" header="Msg Call ID"></Column>
+                    <Column field="batch_run_id" header="Batch ID"></Column>
+                    <Column field="call_url" header="URL"></Column>
+                    <Column field="result" header="Result"></Column>
+                    <Column field="result" header="CallTime TODO"></Column>                    
+                </DataTable>
             </div>
         </div>
-        <!-- end playing -->
+        <!-- end msg his table -->
 
-
-        <div class="card flex justify-content-center">
-            <Toast position="top-center" group="bc" @close="onClose">
-                <template #message="slotProps">
-                    <div class="flex flex-column align-items-start" style="flex: 1">
-                        <div class="flex align-items-center gap-2">
-                            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-                                shape="circle" />
-                            <span class="font-bold text-900">MetaMask Bot</span>
-                        </div>
-                        <div class="font-medium text-lg my-3 text-900">{{ slotProps.message.summary }}</div>
-                        <Button class="p-button-sm" label="Celebrate" @click="onReply()"></Button>
-                    </div>
-                </template>
-            </Toast>
-            <Button @click="showTemplate" label="View" />
+        
+        <!-- batch json list table -->
+        <div class="col-12">
+            <div class="card">
+                <h5>Last 10 JSON Download</h5>
+                <DataTable :value="jsonListData" tableStyle="min-width: 50rem">
+                    <Column field="save_json_local_id" header="JSON File ID"></Column>
+                    <Column field="msg_history_call_id" header="Msg Hist Call ID"></Column>
+                    <Column field="result" header="Result"></Column>
+                    <Column field="saved_location" header="File Location"></Column>
+                    <Column field="attachments_count" header="Attachments Count"></Column>
+                    
+                </DataTable>
+            </div>
         </div>
+        <!-- end json his table -->
 
+        
+        <!-- attach list table -->
+        <div class="col-12">
+            <div class="card">
+                <h5>Last 10 Attachments Download</h5>
+                <DataTable :value="attachmentListData" tableStyle="min-width: 50rem">
+                    <Column field="save_attachment_local_id" header="Attachment ID"></Column>
+                    <Column field="msg_history_call_id" header="Msg Call ID"></Column>
+                    <Column field="result" header="Result"></Column>
+                    <Column field="saved_location" header="File Location"></Column>
+                    
+                </DataTable>
+            </div>
+        </div>
+        <!-- end attch table -->
 
     </div>
 </template>

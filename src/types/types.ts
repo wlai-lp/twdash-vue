@@ -95,6 +95,9 @@ export enum Type {
 
 export enum ExportDashSQLQuery {
     SELECT_ALL_BATCHES = "SELECT * FROM batch_run order by batch_run_id desc limit 10",
+    SELECT_ALL_MSG_HIST = "SELECT * FROM msg_history_call order by msg_history_call_id desc limit 10",
+    SELECT_ALL_JSON_LOCAL = "SELECT * FROM save_json_local order by save_json_local_id desc limit 10",
+    SELECT_ALL_ATTACHMENT = "SELECT * FROM save_attachment_local order by save_attachment_local_id desc limit 10",
     SELECT_COUNT_ALL_BATCHES = "SELECT count(*) FROM batch_run",
     SELECT_COUNT_ALL_HISTORY = "SELECT count(*) FROM msg_history_call",
     SELECT_COUNT_ALL_ATTACHMENT = "SELECT count(*) FROM save_attachment_local",

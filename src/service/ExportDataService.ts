@@ -58,8 +58,7 @@ export class ExportDataService {
 
     }
 
-    async getBatchData() {
-        
+    async getBatchData() {        
         const tursoResult = await this.genericGetTable(ExportDashSQLQuery.SELECT_ALL_BATCHES)
         const results:[] = tursoResult.results[0].response.result?.rows.map(item =>{
             
@@ -80,6 +79,48 @@ export class ExportDataService {
         })
         return results
     }
+
+    async getAttachmentData() {        
+        const tursoResult = await this.genericGetTable(ExportDashSQLQuery.SELECT_ALL_ATTACHMENT)
+        const results:[] = tursoResult.results[0].response.result?.rows.map(item =>{            
+            return {
+                save_attachment_local_id: item[0].value,
+                msg_history_call_id: item[1].value,
+                result: item[2].value,
+                saved_location: item[3].value
+            }            
+        })
+        return results
+    }
+
+    async getJsonData() {        
+        const tursoResult = await this.genericGetTable(ExportDashSQLQuery.SELECT_ALL_JSON_LOCAL)
+        const results:[] = tursoResult.results[0].response.result?.rows.map(item =>{            
+            return {
+                save_json_local_id: item[0].value,
+                msg_history_call_id: item[1].value,
+                result: item[2].value,
+                saved_location: item[3].value,
+                attachments_count: item[4].value
+            }            
+        })
+        return results
+    }
+
+    async getMsgHisData() {        
+        const tursoResult = await this.genericGetTable(ExportDashSQLQuery.SELECT_ALL_MSG_HIST)
+        const results:[] = tursoResult.results[0].response.result?.rows.map(item =>{            
+            return {
+                msg_history_call_id: item[0].value,
+                batch_run_id: item[1].value,
+                call_url: item[2].value,
+                result: item[3].value
+            }            
+        })
+        return results
+    }
+
+
 
     async addToIndexDB(eventDataArray: EventData[], twDataMonth) {
         db.transaction('rw', db.twEvents, db.twCachedData, async () => {
