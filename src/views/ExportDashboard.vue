@@ -377,7 +377,7 @@ watch(
         <div class="col-12">
             <div class="card">
                 <h5>Last 10 Exports</h5>
-                <DataTable :value="batchListData" tableStyle="min-width: 50rem">
+                <DataTable :value="batchListData" selectionMode="single" stripedRows tableStyle="min-width: 50rem">
                     <Column field="batch_run_id" header="Batch ID"></Column>
                     <Column field="start_timestamp" header="Start Time"></Column>
                     <Column field="stop_timestamp" header="Stop Time"></Column>
@@ -394,7 +394,7 @@ watch(
         <div class="col-12">
             <div class="card">
                 <h5>Last 10 Message History Call</h5>
-                <DataTable :value="msgHisListData" tableStyle="min-width: 50rem">
+                <DataTable :value="msgHisListData" selectionMode="single" stripedRows tableStyle="min-width: 50rem">
                     <Column field="msg_history_call_id" header="Msg Call ID"></Column>
                     <Column field="batch_run_id" header="Batch ID"></Column>
                     <Column field="call_url" header="URL"></Column>
@@ -410,7 +410,7 @@ watch(
         <div class="col-12">
             <div class="card">
                 <h5>Last 10 JSON Download</h5>
-                <DataTable :value="jsonListData" tableStyle="min-width: 50rem">
+                <DataTable :value="jsonListData" selectionMode="single" stripedRows tableStyle="min-width: 50rem">
                     <Column field="save_json_local_id" header="JSON File ID"></Column>
                     <Column field="msg_history_call_id" header="Msg Hist Call ID"></Column>
                     <Column field="result" header="Result"></Column>
@@ -427,7 +427,7 @@ watch(
         <div class="col-12">
             <div class="card">
                 <h5>Last 10 Attachments Download</h5>
-                <DataTable :value="attachmentListData" tableStyle="min-width: 50rem">
+                <DataTable :value="attachmentListData" selectionMode="single" dataKey="id" stripedRows tableStyle="min-width: 50rem">
                     <Column field="save_attachment_local_id" header="Attachment ID"></Column>
                     <Column field="msg_history_call_id" header="Msg Call ID"></Column>
                     <Column field="result" header="Result"></Column>
