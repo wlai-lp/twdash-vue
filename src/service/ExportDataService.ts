@@ -17,7 +17,31 @@ export class ExportDataService {
     }
 
     async getBatchCount(){
-        return 123
+        return await this.genericGetCount(ExportDashSQLQuery.SELECT_COUNT_ALL_BATCHES)
+    }
+
+    async getHistoryCount(){
+        return await this.genericGetCount(ExportDashSQLQuery.SELECT_COUNT_ALL_HISTORY)
+    }
+
+    async getAttachmentCount(){
+        return await this.genericGetCount(ExportDashSQLQuery.SELECT_COUNT_ALL_ATTACHMENT)
+    }
+
+    async genericGetCount(sql:string){
+        const myHeaders = getHeaders();
+        console.log(ExportDashSQLQuery.SELECT_ALL_BATCHES)
+        const raw = getBodyRaw(sql);
+        const requestOptions = getRequestOptions(myHeaders, raw);
+
+        const url = 'https://lp-export-data-wlai-lp.turso.io/v2/pipeline';
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+            console.error('Failed to fetch data');
+        }
+        const tursoResult: TursoResult = await response.json();
+        const count = tursoResult.results[0].response.result?.rows[0][0].value
+        return count
     }
 
     async getBatchData() {
