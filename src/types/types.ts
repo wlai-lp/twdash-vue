@@ -94,8 +94,8 @@ export enum Type {
 }
 
 export enum ExportDashSQLQuery {
-    SELECT_ALL_BATCHES = "SELECT * FROM batch_run",
-    SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?",
+    SELECT_ALL_BATCHES = "SELECT * FROM batch_run order by batch_run_id desc limit 10",
+    SELECT_COUNT_ALL_BATCHES = "SELECT count(*) FROM batch_run",
     INSERT_USER = "INSERT INTO users (name, email) VALUES (?, ?)",
     UPDATE_USER = "UPDATE users SET name = ?, email = ? WHERE id = ?",
     DELETE_USER = "DELETE FROM users WHERE id = ?"

@@ -37,6 +37,14 @@ let surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 const indexdbInited = indexedDBManager.init();
 
 const count = ref(0);
+const batchCount = ref(0);
+const batchTodayCount = ref(0);
+const msgHisCallCount = ref(0);
+const msgHisCallTodayCount = ref(0);
+const attachmentCount = ref(0);
+const attachmentTodayCount = ref(0);
+const convoCount = ref(0);
+const convoTodayCount = ref(0);
 // const countTopUsage = ref(0);
 const countTopUsage = reactive({
     message: 'Hello Vue!',
@@ -138,6 +146,8 @@ async function updateWithNewData(data) {
     const newValue = await exportDataService.getBatchData()
     // convoListData.value = twdata._rawValue.slice(0, 10);
     convoListData.value = newValue
+
+    batchCount.value = await exportDataService.getBatchCount()
 
     // console.log(JSON.stringify(twdata._rawValue.slice(0, 10)))
     // count.value = twdata._rawValue.length;
@@ -346,16 +356,16 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Conversations</span>
-                        <div class="text-900 font-medium text-xl">{{ count }} </div>
+                        <span class="block text-500 font-medium mb-3">Batch Count</span>
+                        <div class="text-900 font-medium text-xl">{{ batchCount }} </div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-comments text-blue-500 text-xl"></i>
+                        <i class="pi pi-thumbs-up-fill text-blue-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">24 new </span>
-                <span class="text-500">this month</span>
+                <span class="text-green-500 font-medium">{{ batchTodayCount }} </span>
+                <span class="text-500"> today</span>
             </div>
         </div>
         <!-- End High Level Card 1 -->
@@ -365,16 +375,16 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Top Usage</span>
-                        <div class="text-900 font-medium text-xl">{{ countTopUsage.count }}</div>
+                        <span class="block text-500 font-medium mb-3">Msg Hist Calls Count</span>
+                        <div class="text-900 font-medium text-xl">{{ msgHisCallCount }}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-heart-fill text-orange-500 text-xl"></i>
+                        <i class="pi pi-calculator text-orange-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">{{ countTopUsage.lang }} </span>
-                <span class="text-500"> this month</span>
+                <span class="text-green-500 font-medium">{{ msgHisCallTodayCount }} </span>
+                <span class="text-500"> today</span>
             </div>
         </div>
         <!-- End High Level Card 2 -->
@@ -384,16 +394,16 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">CSAT (TODO)</span>
-                        <div class="text-900 font-medium text-xl">{{ csat }}</div>
+                        <span class="block text-500 font-medium mb-3">Conversations</span>
+                        <div class="text-900 font-medium text-xl">{{ convoCount }}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-thumbs-up-fill text-cyan-500 text-xl"></i>
+                        <i class="pi pi-comments text-cyan-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">4.6 </span>
-                <span class="text-500">this month</span>
+                <span class="text-green-500 font-medium">{{ convoTodayCount }} </span>
+                <span class="text-500"> today</span>
             </div>
         </div>
         <!-- End High Level Card 3 -->
@@ -403,16 +413,16 @@ watch(
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Total Time</span>
-                        <div class="text-900 font-medium text-xl">1520 minutes</div>
+                        <span class="block text-500 font-medium mb-3">Attachments</span>
+                        <div class="text-900 font-medium text-xl">{{ attachmentCount }}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                         style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-clock text-purple-500 text-xl"></i>
+                        <i class="pi pi-cloud-download text-purple-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">85 </span>
-                <span class="text-500">this month</span>
+                <span class="text-green-500 font-medium">{{ attachmentTodayCount }} </span>
+                <span class="text-500"> today</span>
             </div>
         </div>
         <!-- End High Level Card 4 -->

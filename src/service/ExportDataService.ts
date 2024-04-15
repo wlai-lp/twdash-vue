@@ -16,6 +16,10 @@ export class ExportDataService {
         this.toTimestamp = toTimestamp;
     }
 
+    async getBatchCount(){
+        return 123
+    }
+
     async getBatchData() {
         const myHeaders = getHeaders();
         console.log(ExportDashSQLQuery.SELECT_ALL_BATCHES)
