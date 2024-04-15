@@ -20,6 +20,10 @@ export class ExportDataService {
         return await this.genericGetCount(ExportDashSQLQuery.SELECT_COUNT_ALL_BATCHES)
     }
 
+    async getBatchTodayCount(){
+        return await this.genericGetCount(ExportDashSQLQuery.SELECT_TODAY_BATCHES)
+    }
+
     async getHistoryCount(){
         return await this.genericGetCount(ExportDashSQLQuery.SELECT_COUNT_ALL_HISTORY)
     }

@@ -95,6 +95,7 @@ export enum Type {
 
 export enum ExportDashSQLQuery {
     SELECT_ALL_BATCHES = "SELECT * FROM batch_run order by batch_run_id desc limit 10",
+    SELECT_TODAY_BATCHES = "SELECT count(*) from batch_run where start_timestamp >= strftime('%s', 'now', 'start of day') * 1000",
     SELECT_ALL_MSG_HIST = "SELECT * FROM msg_history_call order by msg_history_call_id desc limit 10",
     SELECT_ALL_JSON_LOCAL = "SELECT * FROM save_json_local order by save_json_local_id desc limit 10",
     SELECT_ALL_ATTACHMENT = "SELECT * FROM save_attachment_local order by save_attachment_local_id desc limit 10",

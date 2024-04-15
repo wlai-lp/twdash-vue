@@ -86,6 +86,8 @@ async function updateWithNewData(data) {
     batchListData.value = newValue
 
     batchCount.value = await exportDataService.getBatchCount()
+    batchTodayCount.value = await exportDataService.getBatchTodayCount()
+
     msgHisCallCount.value = await exportDataService.getHistoryCount()
     attachmentCount.value = await exportDataService.getAttachmentCount()
     msgHisListData.value = await exportDataService.getMsgHisData()
