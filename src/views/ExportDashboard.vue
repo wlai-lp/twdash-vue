@@ -384,7 +384,10 @@ watch(
                     <Column field="start_timestamp" header="Start Time"></Column>
                     <Column field="stop_timestamp" header="Stop Time"></Column>
                     <Column field="param_from" header="From Time"></Column>
-                    <Column field="param_to" header="To Time"></Column>
+                    <Column field="searchCount" header="Search Count"></Column>
+                    <Column field="pages" header="Pages"></Column>
+                    <Column field="attachments" header="Attachments"></Column>
+                    <Column field="result" header="Result"></Column>
                     
                 </DataTable>
             </div>

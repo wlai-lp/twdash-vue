@@ -70,15 +70,17 @@ export class ExportDataService {
             const stopTime = new Date(parseInt(item[2].value))
             const fromTime = new Date(parseInt(item[3].value))
             const toTime = new Date(parseInt(item[4].value))
-            // const startTime = new Date(1713059146463)
             
-
             return {
                 batch_run_id: item[0].value,
                 start_timestamp: startTime.toISOString(),
                 stop_timestamp: stopTime.toISOString(),
                 param_from: fromTime.toISOString(),
-                param_to: toTime.toISOString()
+                param_to: toTime.toISOString(),
+                searchCount: item[5].value,
+                pages: item[6].value,
+                attachments: item[7].value,
+                result: item[8].value,
             }            
         })
         return results
